@@ -57,20 +57,23 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        
+        if (collision.CompareTag("EndingTrigger"))
+        {
+            GameManager.instance.TriggerFinalEnding();
+        }
     }
     
     public void Die()
     {
-        // 如果在区域1,2,3，直接读档重来
-        if (GameManager.instance.currentRegion < 4)
+        // 如果正在播放大结局，玩家处于"被鱼群淹没但游戏不重置"的状态，直接忽略死亡
+        if (GameManager.instance.isEndingActive) 
         {
-            Debug.Log("被吃掉了！重新开始！");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // 重新加载当前场景
+            return; 
         }
-        else
-        {
-            // 如果在区域4被碰到，什么都不做！任由怪物挤压，等待灯灭的剧情。
-            Debug.Log("在结局区被怪物包围...");
-        }
+
+        // 正常的死亡读档逻辑
+        Debug.Log("被吃掉了！重新开始！");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 }

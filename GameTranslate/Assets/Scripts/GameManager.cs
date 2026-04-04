@@ -9,26 +9,21 @@ public class GameManager : MonoBehaviour
     public Transform playerLightCone; // 改成获取 LightCone 的 Transform
     public UnityEngine.Rendering.Universal.Light2D bodyLight;
     public PlayerController playerController; // 获取玩家脚本，用于大结局停止操作
+    public UnityEngine.Rendering.Universal.Light2D coneLight2D;
 
     [Header("区域状态")]
     public int currentRegion = 1;
     
+    [Header("结局状态")]
+    public bool isEndingActive = false; // 是否已经触发了最终结局
+    
     private Vector3 targetConeScale = Vector3.one; // 光锥的目标缩放值
     private bool isFlickering = false;
-    private UnityEngine.Rendering.Universal.Light2D coneLight2D;
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
-    }
-
-    private void Start()
-    {
-        if (playerLightCone != null)
-        {
-            coneLight2D = playerLightCone.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
-        }
     }
 
     private void Update()
@@ -81,36 +76,45 @@ public class GameManager : MonoBehaviour
                 if (AudioManager.instance != null) AudioManager.instance.StartHeartbeat(); 
                 break;
             case 4:
-                // 【新增】：进入区域4，BGM用 2秒 的时间淡出再淡入新BGM！
+                // 进入区域4大框：只切BGM，灯光变得极小，但不触发彻底断电
+                targetConeScale = new Vector3(0.3f, 0.3f, 1f); // 光变很小
+                isFlickering = false; // 区域4反而不闪了，变成微弱的死光
                 if (AudioManager.instance != null) AudioManager.instance.CrossfadeBGM(2f);
-                
-                StartCoroutine(DespairEndingRoutine());
                 break;
         }
+    }
+    
+    public void TriggerFinalEnding()
+    {
+        if (isEndingActive) return;
+        isEndingActive = true;
+        StartCoroutine(DespairEndingRoutine());
     }
 
     // 大结局演出序列
     private IEnumerator DespairEndingRoutine()
     {
-        Debug.Log("大结局开始！");
-        isFlickering = false; 
-
-        targetConeScale = new Vector3(0.1f, 0.1f, 1f); 
-        playerController.moveSpeed = playerController.baseSpeed * 0.3f;
-
-        // 【新增】：绝望感飙升，心跳变得缓慢而沉重 (Pitch变小)
-        if (AudioManager.instance != null) AudioManager.instance.SetHeartbeatPitch(0.6f);
-
-        yield return new WaitForSeconds(3f);
-
-        if(coneLight2D != null) coneLight2D.intensity = 0;
-        bodyLight.intensity = 0;
+        Debug.Log("到达终点，大结局演出开始！");
+        
+        // 1. 玩家停止移动，进入无敌被包围状态
         playerController.canMove = false;
+        
+        // 2. 让周围鱼的速度变慢一点，营造宿命感 (可选)
+        
+        // 3. 按照你的要求：灯笼闪烁几次
+        for (int i = 0; i < 5; i++)
+        {
+            if (coneLight2D != null) coneLight2D.intensity = 0.1f;
+            yield return new WaitForSeconds(0.1f);
+            if (coneLight2D != null) coneLight2D.intensity = 0.8f;
+            yield return new WaitForSeconds(0.15f);
+        }
 
-        // 【新增】：灯光熄灭瞬间，切断所有声音，陷入纯粹的死寂！
+        // 4. 灯光彻底熄灭 (噗！)
+        if (coneLight2D != null) coneLight2D.intensity = 0;
+        bodyLight.intensity = 0;
+        
         if (AudioManager.instance != null) AudioManager.instance.StopAllAudioForEnding();
-        // 如果你找到了一个清脆的“噗/断电”音效，可以在上面这行之后单独播放一次
-
         Debug.Log("游戏结束 - 画面纯黑，绝对安静");
     }
 }

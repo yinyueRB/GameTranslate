@@ -6,6 +6,7 @@ TagManager:
   tags:
   - LightArea
   - RegionTrigger
+  - EndingTrigger
   layers:
   - Default
   - TransparentFX

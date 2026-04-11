@@ -66,14 +66,22 @@ public class PlayerController : MonoBehaviour
     
     public void Die()
     {
-        // 如果正在播放大结局，玩家处于"被鱼群淹没但游戏不重置"的状态，直接忽略死亡
+        // 如果在大结局区域被碰
         if (GameManager.instance.isEndingActive) 
         {
+            // 【新增】：让玩家的物理质量变得极大，或者直接冻结位置，这样怪物就推不动你了，只能把你死死围住
+            rb.velocity = Vector2.zero; // 清除当前惯性
+            rb.constraints = RigidbodyConstraints2D.FreezeAll; // 彻底冻结位置和旋转
             return; 
         }
 
-        // 正常的死亡读档逻辑
-        Debug.Log("被吃掉了！重新开始！");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        if (!canMove) return; 
+
+        Debug.Log("死亡演出开始...");
+        
+        // 【新增】：普通死亡时，也停住玩家，防止黑屏期间被怪物推着滑行
+        rb.velocity = Vector2.zero; 
+
+        GameManager.instance.TriggerDeath(); 
     }
 }

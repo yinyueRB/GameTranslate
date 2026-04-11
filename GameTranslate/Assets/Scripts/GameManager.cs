@@ -1,29 +1,64 @@
 using UnityEngine;
-using System.Collections; // 必须引入这个才能用协程
+using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public static int reachedRegion = 1; 
+
+    [Header("复活点设置")]
+    public Transform[] spawnPoints; // 在面板里把4个SpawnPoint按顺序拖进来
+
     [Header("玩家引用")]
-    public Transform playerLightCone; // 改成获取 LightCone 的 Transform
+    public Transform playerLightCone;
     public UnityEngine.Rendering.Universal.Light2D bodyLight;
-    public PlayerController playerController; // 获取玩家脚本，用于大结局停止操作
-    public UnityEngine.Rendering.Universal.Light2D coneLight2D;
+    public PlayerController playerController;
 
     [Header("区域状态")]
     public int currentRegion = 1;
+    public bool isEndingActive = false;
     
-    [Header("结局状态")]
-    public bool isEndingActive = false; // 是否已经触发了最终结局
+    [Header("UI表现")]
+    public CanvasGroup fadeScreen; // 拖入 FadeImage 身上的 CanvasGroup 组件
+    public float fadeDuration = 1.5f; // 黑屏渐变时间
     
-    private Vector3 targetConeScale = Vector3.one; // 光锥的目标缩放值
+    private Vector3 targetConeScale = Vector3.one;
     private bool isFlickering = false;
+    private UnityEngine.Rendering.Universal.Light2D coneLight2D;
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
+    }
+    
+    private void Start()
+    {
+        if (playerLightCone != null)
+        {
+            coneLight2D = playerLightCone.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        }
+
+        // --- 每次场景重新加载时，执行复活逻辑 ---
+        currentRegion = reachedRegion; // 读取记录
+        Debug.Log("从区域 " + currentRegion + " 复活");
+
+        // 1. 把玩家传送到对应的复活点 (注意数组下标从0开始)
+        if (spawnPoints.Length >= currentRegion && playerController != null)
+        {
+            playerController.transform.position = spawnPoints[currentRegion - 1].position;
+        }
+
+        // 2. 立刻应用该区域的光照和音乐效果
+        ApplyRegionEffects();
+
+        // 3. 激活该区域的怪物 (如果你之前做了分区域激活怪物的话)
+        ActivateEnemiesInRegion(currentRegion);
+        
+        if (fadeScreen != null) StartCoroutine(FadeInRoutine());
     }
 
     private void Update()
@@ -44,44 +79,73 @@ public class GameManager : MonoBehaviour
     public void EnterNewRegion(int regionNumber)
     {
         if (regionNumber <= currentRegion) return;
-        currentRegion = regionNumber;
-        Debug.Log("进入区域: " + currentRegion);
         
-        // 激活当前区域名字对应的子物体(即怪物)
-        GameObject currentRegionObj = GameObject.Find("Region_" + currentRegion);
+        currentRegion = regionNumber;
+        reachedRegion = regionNumber; // 【新增】：玩家进入新区域时，更新存档记录！
+        
+        Debug.Log("进入区域: " + currentRegion + "，已自动存档");
+        
+        ActivateEnemiesInRegion(currentRegion);
+        ApplyRegionEffects();
+    }
+    
+    private void ActivateEnemiesInRegion(int regionNum)
+    {
+        GameObject currentRegionObj = GameObject.Find("Region_" + regionNum);
         if (currentRegionObj != null)
         {
-            // 遍历该区域下的所有怪物并激活它们
             foreach (Transform child in currentRegionObj.transform)
             {
                 child.gameObject.SetActive(true);
             }
         }
-
-        ApplyRegionEffects();
     }
 
     private void ApplyRegionEffects()
     {
+        // 这里把光照直接设为目标值，防止复活时看到光照慢慢缩小的穿帮镜头
         switch (currentRegion)
         {
+            case 1:
+                targetConeScale = Vector3.one;
+                if(playerLightCone != null) playerLightCone.localScale = targetConeScale;
+                break;
             case 2:
                 targetConeScale = new Vector3(0.7f, 0.7f, 1f);
+                if(playerLightCone != null) playerLightCone.localScale = targetConeScale;
                 if(coneLight2D != null) coneLight2D.intensity = 0.8f;
                 break;
             case 3:
                 targetConeScale = new Vector3(0.5f, 0.5f, 1f);
+                if(playerLightCone != null) playerLightCone.localScale = targetConeScale;
                 isFlickering = true;
-                // 【新增】：进入区域3，开启心跳声！
                 if (AudioManager.instance != null) AudioManager.instance.StartHeartbeat(); 
                 break;
             case 4:
-                // 进入区域4大框：只切BGM，灯光变得极小，但不触发彻底断电
-                targetConeScale = new Vector3(0.3f, 0.3f, 1f); // 光变很小
-                isFlickering = false; // 区域4反而不闪了，变成微弱的死光
+                targetConeScale = new Vector3(0.3f, 0.3f, 1f);
+                if(playerLightCone != null) playerLightCone.localScale = targetConeScale;
+                isFlickering = false;
                 if (AudioManager.instance != null) AudioManager.instance.CrossfadeBGM(2f);
                 break;
         }
+    }
+    
+    private IEnumerator FadeInRoutine()
+    {
+        fadeScreen.alpha = 1f; // 一开始全黑
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            fadeScreen.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+            yield return null;
+        }
+        fadeScreen.alpha = 0f;
+    }
+    
+    public void TriggerDeath()
+    {
+        StartCoroutine(DeathFadeRoutine());
     }
     
     public void TriggerFinalEnding()
@@ -89,6 +153,34 @@ public class GameManager : MonoBehaviour
         if (isEndingActive) return;
         isEndingActive = true;
         StartCoroutine(DespairEndingRoutine());
+    }
+    
+    private IEnumerator DeathFadeRoutine()
+    {
+        // 1. 剥夺玩家控制，让角色停留在原地
+        if (playerController != null) playerController.canMove = false;
+
+        // 2. （可选，极度增强失落感）让背景音乐变得沉重缓慢
+        if (AudioManager.instance != null && AudioManager.instance.bgmSource != null)
+        {
+            AudioManager.instance.bgmSource.pitch = 0.5f; 
+        }
+
+        // 3. 画面渐渐变黑
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            if (fadeScreen != null) fadeScreen.alpha = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+            yield return null;
+        }
+        fadeScreen.alpha = 1f;
+
+        // 4. 在无尽的黑暗中停留 1 秒钟，让失落感沉淀
+        yield return new WaitForSeconds(1f);
+
+        // 5. 重新加载场景复活
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
     // 大结局演出序列

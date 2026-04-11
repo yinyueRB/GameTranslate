@@ -164,3 +164,8 @@ MonoBehaviour:
   myType: 1
   baseSpeed: 3.75
   chaseRadius: 12
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  detectDistance: 1.5
+  avoidStrength: 2

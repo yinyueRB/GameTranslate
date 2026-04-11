@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("玩家引用")]
     public Transform playerLightCone;
+    public UnityEngine.Rendering.Universal.Light2D coneLight2D;
     public UnityEngine.Rendering.Universal.Light2D bodyLight;
     public PlayerController playerController;
 
@@ -27,7 +28,6 @@ public class GameManager : MonoBehaviour
     
     private Vector3 targetConeScale = Vector3.one;
     private bool isFlickering = false;
-    private UnityEngine.Rendering.Universal.Light2D coneLight2D;
 
     private void Awake()
     {
@@ -37,11 +37,6 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        if (playerLightCone != null)
-        {
-            coneLight2D = playerLightCone.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
-        }
-
         // --- 每次场景重新加载时，执行复活逻辑 ---
         currentRegion = reachedRegion; // 读取记录
         Debug.Log("从区域 " + currentRegion + " 复活");

@@ -3624,11 +3624,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.18429488
+      value: -0.166
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13112746
+      value: 0.136
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5826,11 +5826,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.248
+      value: -0.213
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2061
+      value: 0.247
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14918,7 +14918,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.43
-  m_Color: {r: 0.066453, g: 0.28070104, b: 0.6037736, a: 1}
+  m_Color: {r: 0.066666655, g: 0.23833625, b: 0.6039216, a: 1}
   m_Intensity: 0.6
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
@@ -16001,11 +16001,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.1895
+      value: 0.157
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4162
+      value: 0.397
       objectReference: {fileID: 0}
     - target: {fileID: 3734986723736728698, guid: 56601a0f47671474d8d9d32e71140425, type: 3}
       propertyPath: m_LocalPosition.z
@@ -19636,7 +19636,7 @@ Transform:
   m_GameObject: {fileID: 1789955744}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5999832, y: 72.49999, z: -20}
+  m_LocalPosition: {x: 0.59997773, y: 72.49999, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20171,7 +20171,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_Intensity: 0.1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
@@ -20705,7 +20705,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7050720678432539086, guid: a0c54e06df1d8914388d1e8ff3153ddc, type: 3}
   m_PrefabInstance: {fileID: 1168751601435250684}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2077058431}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9e2de63e78fa3044aa0b94bd2c5914d, type: 3}
@@ -22472,6 +22472,32 @@ PolygonCollider2D:
       - {x: 0.29296875, y: 0.90234375}
       - {x: 0.15234375, y: 0.97265625}
   m_UseDelaunayMesh: 0
+--- !u!1 &2077058431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1810711515739265575, guid: a0c54e06df1d8914388d1e8ff3153ddc, type: 3}
+  m_PrefabInstance: {fileID: 1168751601435250684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2077058432
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077058431}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a662568b2f6d844fbc194841a412406, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2102865858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22636,7 +22662,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1810711515739265575, guid: a0c54e06df1d8914388d1e8ff3153ddc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2077058432}
   m_SourcePrefab: {fileID: 100100000, guid: a0c54e06df1d8914388d1e8ff3153ddc, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

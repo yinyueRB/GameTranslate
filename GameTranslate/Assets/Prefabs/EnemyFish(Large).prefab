@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 799003177416929605}
   - component: {fileID: 7214327589267679429}
   - component: {fileID: 2105523532422154884}
-  - component: {fileID: 6860011973191593000}
   - component: {fileID: 7995837526523324205}
+  - component: {fileID: 3718121807828678109}
   m_Layer: 0
   m_Name: EnemyFish(Large)
   m_TagString: Untagged
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 09eda219e018a3c4db35b58f15fd7186, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -114,8 +114,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &6860011973191593000
-CapsuleCollider2D:
+--- !u!114 &7995837526523324205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242751291689223402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869c1e61f0735d0499093caaee9bf1b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myType: 2
+  baseSpeed: 4.5
+  chaseRadius: 12
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  detectDistance: 1.5
+  avoidStrength: 2
+--- !u!68 &3718121807828678109
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -147,25 +167,26 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
---- !u!114 &7995837526523324205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 242751291689223402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869c1e61f0735d0499093caaee9bf1b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myType: 2
-  baseSpeed: 4.5
-  chaseRadius: 12
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  detectDistance: 1.5
-  avoidStrength: 2
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.053103924, y: -9.003255}
+  - {x: -0.12065652, y: -8.20602}
+  - {x: -0.6868515, y: -7.8408947}
+  - {x: -0.22453094, y: -6.915019}
+  - {x: -0.75150776, y: -2.4884627}
+  - {x: -1.8534292, y: -2.24325}
+  - {x: -0.7388935, y: -1.2118471}
+  - {x: -0.45900977, y: 0.1053884}
+  - {x: 0.017766315, y: 3.5966249}
+  - {x: 0.3222282, y: -0.042906523}
+  - {x: 0.80020404, y: -1.267204}
+  - {x: 1.8305712, y: -2.3084726}
+  - {x: 0.7372823, y: -2.4656916}
+  - {x: 0.21893573, y: -6.8245635}
+  - {x: 0.67637074, y: -7.888127}
+  - {x: 0.08747655, y: -8.23771}
+  - {x: -0.022416897, y: -9.002437}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0

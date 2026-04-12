@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 653709845043790546}
   - component: {fileID: 6762148245399712260}
   - component: {fileID: 8003259911497515294}
-  - component: {fileID: 7461035600617825854}
   - component: {fileID: 5978959527580763315}
+  - component: {fileID: 7560752892243719730}
   m_Layer: 0
   m_Name: EnemyFish(Medium)
   m_TagString: Untagged
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 045a38c46afb3874e888829b1deea2ce, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -114,8 +114,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &7461035600617825854
-CapsuleCollider2D:
+--- !u!114 &5978959527580763315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433432536177149958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869c1e61f0735d0499093caaee9bf1b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myType: 1
+  baseSpeed: 3.75
+  chaseRadius: 12
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  detectDistance: 1.5
+  avoidStrength: 2
+--- !u!68 &7560752892243719730
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -147,25 +167,26 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
---- !u!114 &5978959527580763315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7433432536177149958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869c1e61f0735d0499093caaee9bf1b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myType: 1
-  baseSpeed: 3.75
-  chaseRadius: 12
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  detectDistance: 1.5
-  avoidStrength: 2
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.07667494, y: -5.0398865}
+  - {x: -1.4586937, y: -5.3985186}
+  - {x: -0.32723635, y: -3.9825122}
+  - {x: -1.2395113, y: -1.6366428}
+  - {x: -3.0414803, y: -2.0954359}
+  - {x: -2.1907697, y: -0.43016994}
+  - {x: -1.1573855, y: 0.32241625}
+  - {x: -0.8413874, y: 1.1082346}
+  - {x: -0.01605606, y: 1.2688888}
+  - {x: 0.93662536, y: 1.084225}
+  - {x: 1.0758759, y: 0.2696905}
+  - {x: 2.261014, y: -0.5324355}
+  - {x: 2.9077964, y: -2.077889}
+  - {x: 1.1763923, y: -1.5039198}
+  - {x: 0.36951244, y: -3.9814208}
+  - {x: 1.5071402, y: -5.467646}
+  - {x: 0.0246315, y: -4.9574447}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0

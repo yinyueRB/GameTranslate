@@ -184,11 +184,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("到达终点，大结局演出开始！");
         
         // 1. 玩家停止移动，进入无敌被包围状态
-        playerController.canMove = false;
+        if (playerController != null) playerController.canMove = false;
         
-        // 2. 让周围鱼的速度变慢一点，营造宿命感 (可选)
-        
-        // 3. 按照你的要求：灯笼闪烁几次
+        // 2. 灯笼做最后几次挣扎的闪烁
         for (int i = 0; i < 5; i++)
         {
             if (coneLight2D != null) coneLight2D.intensity = 0.1f;
@@ -197,11 +195,43 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
         }
 
-        // 4. 灯光彻底熄灭 (噗！)
-        if (coneLight2D != null) coneLight2D.intensity = 0;
-        bodyLight.intensity = 0;
+        // --- 【全新逻辑】：声音与画面共同渐渐熄灭 ---
+        float fadeDuration = 3.5f; // 渐渐熄灭的过程持续 3.5 秒 (这个时间让人感觉最失落)
+        float timer = 0f;
+
+        // 记录熄灭前的灯光亮度
+        float startConeIntensity = coneLight2D != null ? coneLight2D.intensity : 0f;
+        float startBodyIntensity = bodyLight != null ? bodyLight.intensity : 0f;
+
+        // 通知音频管理器开始渐隐所有声音
+        if (AudioManager.instance != null) AudioManager.instance.FadeOutAllAudio(fadeDuration);
+
+        // 开始渐隐循环
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            float progress = timer / fadeDuration; // 进度从 0 到 1
+
+            // 灯光渐渐变暗到 0
+            if (coneLight2D != null) coneLight2D.intensity = Mathf.Lerp(startConeIntensity, 0f, progress);
+            if (bodyLight != null) bodyLight.intensity = Mathf.Lerp(startBodyIntensity, 0f, progress);
+
+            // 黑屏UI渐渐覆盖全屏 (从透明到全黑)
+            if (fadeScreen != null) fadeScreen.alpha = Mathf.Lerp(0f, 1f, progress);
+
+            yield return null; // 等待下一帧
+        }
+
+        // 确保最后彻底黑屏断电
+        if (coneLight2D != null) coneLight2D.intensity = 0f;
+        if (bodyLight != null) bodyLight.intensity = 0f;
+        if (fadeScreen != null) fadeScreen.alpha = 1f;
+
+        Debug.Log("游戏结束 - 画面纯黑，声音完全消失");
         
-        if (AudioManager.instance != null) AudioManager.instance.StopAllAudioForEnding();
-        Debug.Log("游戏结束 - 画面纯黑，绝对安静");
+        // --- 可选：在彻底黑暗中停留几秒后，退出游戏或显示标题 ---
+        yield return new WaitForSeconds(3f);
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
 }

@@ -87,4 +87,29 @@ public class AudioManager : MonoBehaviour
         ambientSource.Stop();
         heartbeatSource.Stop();
     }
+    
+    public void FadeOutAllAudio(float duration)
+    {
+        StartCoroutine(FadeOutSource(ambientSource, duration));
+        StartCoroutine(FadeOutSource(bgmSource, duration));
+        StartCoroutine(FadeOutSource(heartbeatSource, duration));
+    }
+
+    private IEnumerator FadeOutSource(AudioSource source, float duration)
+    {
+        if (source == null || !source.isPlaying) yield break;
+
+        float startVolume = source.volume;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            source.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
+            yield return null;
+        }
+
+        source.volume = 0f;
+        source.Stop();
+    }
 }

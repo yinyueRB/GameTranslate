@@ -37,11 +37,6 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        if (playerLightCone != null)
-        {
-            coneLight2D = playerLightCone.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
-        }
-
         // --- 每次场景重新加载时，执行复活逻辑 ---
         currentRegion = reachedRegion; // 读取记录
         Debug.Log("从区域 " + currentRegion + " 复活");
@@ -124,7 +119,7 @@ public class GameManager : MonoBehaviour
             case 4:
                 targetConeScale = new Vector3(0.3f, 0.3f, 1f);
                 if(playerLightCone != null) playerLightCone.localScale = targetConeScale;
-                isFlickering = false;
+                isFlickering = true;
                 if (AudioManager.instance != null) AudioManager.instance.CrossfadeBGM(2f);
                 break;
         }
